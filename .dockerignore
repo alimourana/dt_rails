@@ -1,0 +1,16 @@
+.git
+.gitignore
+README.md
+Dockerfile
+docker-compose.yml
+.dockerignore
+Makefile
+tmp/
+log/
+*.log
+.DS_Store
+node_modules/
+coverage/
+.byebug_history
+.env
+.env.*

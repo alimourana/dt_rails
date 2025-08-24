@@ -1,0 +1,22 @@
+# frozen_string_literal: true
+
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: rails
+  password: password
+  host: db
+  port: 3306
+
+development:
+  <<: *default
+  database: dt_rails_development
+
+test:
+  <<: *default
+  database: dt_rails_test
+
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
