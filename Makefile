@@ -9,6 +9,9 @@ help: ## Show this help message
 build: ## Build the Docker images
 	docker-compose build
 
+build-no-cache: ## Build the Docker images without cache (use when adding new gems)
+	docker-compose build --no-cache
+
 up: ## Start the application (build if needed)
 	docker-compose up -d
 
@@ -55,3 +58,29 @@ full-clean: ## Remove all containers, networks, and volumes
 
 status: ## Show status of containers
 	docker-compose ps
+
+test: ## Run RSpec tests (requires gems to be installed)
+	docker-compose exec web bundle exec rspec
+
+test-watch: ## Run RSpec tests in watch mode
+	docker-compose exec web bundle exec rspec --watch
+
+test-coverage: ## Run RSpec tests with coverage
+	docker-compose exec web COVERAGE=true bundle exec rspec
+
+test-install: ## Install RSpec gems in container
+	docker-compose exec web bundle install
+
+gems-check: ## Check gem installation status
+	docker-compose exec web bundle check
+
+gems-install: ## Install missing gems in container
+	docker-compose exec web bundle install
+
+test-setup: ## Setup RSpec for the first time
+	docker-compose exec web bundle add rspec-rails --group=test
+	docker-compose exec web bundle add factory_bot_rails --group=test
+	docker-compose exec web bundle add faker --group=test
+	docker-compose exec web bundle add shoulda-matchers --group=test
+	docker-compose exec web bundle add database_cleaner-active_record --group=test
+	docker-compose exec web bundle install
