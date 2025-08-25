@@ -37,6 +37,9 @@ db-logs: ## Show database logs
 console: ## Open Rails console
 	docker-compose exec web rails console
 
+db-migrate: ## Run database migrations
+	docker-compose exec web rails db:migrate
+
 db-console: ## Open database console
 	docker-compose exec db mysql -u rails -p dt_rails_development
 
