@@ -115,8 +115,45 @@ Key environment variables can be configured in `docker-compose.yml`:
 
 ### Adding New Gems
 1. Add gems to `Gemfile`
-2. Rebuild the Docker image: `make build`
-3. Restart the application: `make restart`
+2. **Option A**: Rebuild the Docker image: `make build` (uses cache)
+3. **Option B**: Force rebuild without cache: `make build-no-cache` (recommended for new gems)
+4. Restart the application: `make restart`
+
+**Automatic Gem Installation**: The Docker container automatically checks for missing gems on startup and installs them if needed. This means you can add gems to your Gemfile and restart the container without rebuilding.
+
+### Testing with RSpec
+The application includes RSpec for testing. To set up RSpec for the first time:
+
+```bash
+# Setup RSpec and testing gems
+make test-setup
+
+# Run tests
+make test
+
+# Run tests in watch mode
+make test-watch
+
+# Run tests with coverage
+make test-coverage
+```
+
+**Note**: If you encounter gem installation issues, you can install gems directly in the container:
+```bash
+make test-install
+```
+
+### Gem Management Commands
+```bash
+# Check if all gems are properly installed
+make gems-check
+
+# Install missing gems in the container
+make gems-install
+
+# Force rebuild when adding new gems (recommended)
+make build-no-cache
+```
 
 ### Database Migrations
 ```bash
