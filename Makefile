@@ -4,7 +4,10 @@ help: ## Show this help message
 	@echo 'Usage: make [target]'
 	@echo ''
 	@echo 'Targets:'
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-15s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@echo '  Database Management:'
+	@awk 'BEGIN {FS = ":.*?## "} /^db-[a-zA-Z_-]+:.*?## / {printf "    %-15s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@echo '  Container Management:'
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / && !/^db-[a-zA-Z_-]+:.*?## / {printf "    %-15s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 build: ## Build the Docker images
 	docker-compose build
@@ -40,6 +43,12 @@ db-logs: ## Show database logs
 console: ## Open Rails console
 	docker-compose exec web rails console
 
+db-migrate: ## Run database migrations
+	docker-compose exec web rails db:migrate
+
+db-status: ## Check database migration status
+	docker-compose exec web rails db:migrate:status
+
 db-console: ## Open database console
 	docker-compose exec db mysql -u rails -p dt_rails_development
 
@@ -49,12 +58,18 @@ setup: ## Initial setup - build, create database, run migrations
 	sleep 5
 	docker-compose exec web rails db:create db:migrate
 
-clean: ## Remove all containers
-	docker-compose down -v --remove-orphans
+clean: ## Remove all containers (preserves database)
+	docker-compose down --remove-orphans
 
-full-clean: ## Remove all containers, networks, and volumes
+full-clean: ## Remove all containers, networks, and volumes (WARNING: deletes database)
 	docker-compose down -v --remove-orphans
 	docker system prune -f
+
+db-reset: ## Reset database (WARNING: deletes all data)
+	docker-compose down -v
+	docker-compose up -d db
+	sleep 5
+	docker-compose exec web rails db:create db:migrate
 
 status: ## Show status of containers
 	docker-compose ps

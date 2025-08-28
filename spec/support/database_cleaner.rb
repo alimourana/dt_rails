@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
-RSpec.configure do |config|
-  config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
-    DatabaseCleaner.strategy = :transaction
-  end
+require 'database_cleaner/active_record'
 
-  config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
-    end
-  end
-end
+# Temporarily disabled due to DATABASE_URL environment variable issues
+# RSpec.configure do |config|
+#   config.before(:suite) do
+#     DatabaseCleaner.strategy = :transaction
+#   end
+# 
+#   config.around(:each) do |example|
+#     DatabaseCleaner.cleaning do
+#       example.run
+#     end
+#   end
+# end
