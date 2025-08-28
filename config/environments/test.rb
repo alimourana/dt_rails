@@ -59,4 +59,10 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # Allow requests to www.example.com in test environment
+  config.hosts << "www.example.com"
+  
+  # Disable host authorization in test environment for easier testing
+  config.action_dispatch.host_authorization = { exclude: ->(request) { true } }
 end
