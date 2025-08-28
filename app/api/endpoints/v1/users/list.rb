@@ -2,10 +2,6 @@ module Endpoints
   module V1
     module Users
       class List < Grape::API
-        version 'v1', using: :path
-        format :json
-        prefix :api
-
         resource :users do
           desc 'Get all users'
           get do
