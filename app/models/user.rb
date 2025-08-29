@@ -13,6 +13,12 @@ class User < ApplicationRecord
   validates :role, presence: true, inclusion: { in: %w[user admin manager] }
   validates :is_active, inclusion: { in: [true, false] }
   
+  enum role: {
+    user: 0,
+    admin: 1,
+    manager: 2
+  }
+
   def full_name
     "#{first_name} #{last_name}"
   end
