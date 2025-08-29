@@ -2,7 +2,8 @@ module Endpoints
   module V1
     module Users
       class Create < Grape::API
-        
+        include Users::Common
+
         resource :users do
           namespace_setting(:category, "users")
           
@@ -13,10 +14,7 @@ module Endpoints
               { code: 200, model: Entities::User }
             ],
             failure: [
-              { code: 400, message: 'Bad Request' },
-              { code: 401, message: 'Unauthorized' },
-              { code: 404, message: 'Not Found' },
-              { code: 500, message: 'Internal Server Error' }
+              { code: 401, message: Strings::ERROR_USER_EXISTS }
             ]
           }
           # endpoint "createUser"
@@ -30,10 +28,12 @@ module Endpoints
             requires :city, type: String, desc: 'City'
             requires :state, type: String, desc: 'State'
             requires :country, type: String, desc: 'Country'
-            optional :role, type: String, desc: 'User role', default: 'user'
+            optional :role, type: String, values: %w[user admin manager], desc: 'User role', default: 'user'
             optional :is_active, type: Boolean, desc: 'Active status', default: true
           end
-          post do
+          post 'create' do
+            user_exists!
+
             user_params = {
               first_name: params[:first_name],
               last_name: params[:last_name],
