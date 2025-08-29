@@ -32,7 +32,7 @@ module Endpoints
             optional :role, type: String, desc: 'User role'
             optional :is_active, type: Boolean, desc: 'Active status'
           end
-          put ':id' do
+          patch ':id/update' do
             user = User.find(params[:id])
             update_params = {}
             update_params[:first_name] = params[:first_name] if params[:first_name]
