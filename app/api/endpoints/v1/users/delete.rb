@@ -22,7 +22,7 @@ module Endpoints
           params do
             requires :id, type: Integer, desc: 'User ID'
           end
-          delete ':id' do
+          delete ':id/delete' do
             user = User.find(params[:id])
             user.destroy!
             { message: 'User deleted successfully' }
