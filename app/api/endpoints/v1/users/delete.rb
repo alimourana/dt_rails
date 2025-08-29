@@ -2,6 +2,8 @@ module Endpoints
   module V1
     module Users
       class Delete < Grape::API
+        include Users::Common
+
         resource :users do
           namespace_setting(:category, "users")
           
@@ -23,6 +25,8 @@ module Endpoints
             requires :id, type: Integer, desc: 'User ID'
           end
           delete ':id/delete' do
+            user_exists!
+
             user = User.find(params[:id])
             user.destroy!
             { message: 'User deleted successfully' }
