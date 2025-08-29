@@ -1,7 +1,7 @@
 class Document < ApplicationRecord
   belongs_to :employee, optional: true
   belongs_to :truck, optional: true
-  belongs_to :citerne, optional: true
+  belongs_to :citerne, optional: true, foreign_key: 'citernes_id'
   
   validates :title, presence: true
   validates :type, presence: true, inclusion: { in: %w[invoice delivery_note contract maintenance_report other] }

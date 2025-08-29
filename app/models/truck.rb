@@ -1,6 +1,6 @@
 class Truck < ApplicationRecord
   belongs_to :employee
-  belongs_to :citerne
+  belongs_to :citerne, foreign_key: 'citernes_id'
   has_many :documents, dependent: :nullify
   has_many :delivery_notes, dependent: :nullify
   

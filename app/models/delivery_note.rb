@@ -1,7 +1,7 @@
 class DeliveryNote < ApplicationRecord
   belongs_to :employee, optional: true
   belongs_to :truck, optional: true
-  belongs_to :citerne, optional: true
+  belongs_to :citerne, optional: true, foreign_key: 'citernes_id'
   
   validates :number, presence: true, uniqueness: true
   validates :status, presence: true, inclusion: { in: %w[pending in_transit delivered returned cancelled] }
