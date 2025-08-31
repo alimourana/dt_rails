@@ -67,3 +67,7 @@ docker-compose.override.yml
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Ignore RuboCop cache and temporary files
+.rubocop_cache/
+.rubocop_todo.yml

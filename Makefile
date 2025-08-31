@@ -99,3 +99,19 @@ test-setup: ## Setup RSpec for the first time
 	docker-compose exec web bundle add shoulda-matchers --group=test
 	docker-compose exec web bundle add database_cleaner-active_record --group=test
 	docker-compose exec web bundle install
+
+# Code Quality
+rubocop: ## Run RuboCop to check code style
+	docker-compose exec web bundle exec rubocop
+
+rubocop-fix: ## Run RuboCop to auto-fix code style issues
+	docker-compose exec web bundle exec rubocop -a
+
+rubocop-fix-all: ## Run RuboCop to auto-fix all possible code style issues
+	docker-compose exec web bundle exec rubocop -A
+
+rubocop-todo: ## Generate RuboCop TODO file for existing violations
+	docker-compose exec web bundle exec rubocop --auto-gen-config
+
+rubocop-check: ## Check if RuboCop gems are installed
+	docker-compose exec web bundle exec rubocop --version
