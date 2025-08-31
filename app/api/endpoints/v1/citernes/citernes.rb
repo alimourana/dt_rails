@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 # module API
 #   module V1
 #     class Citernes < Grape::API
 #       # before { authenticate! }
-      
+
 #       resource :citernes do
 #         desc 'Get all citernes'
 #         get do
 #           citernes = Citerne.all
 #           present citernes, with: CiterneEntity::Base
 #         end
-        
+
 #         desc 'Get a specific citerne'
 #         params do
 #           requires :id, type: Integer, desc: 'Citerne ID'
@@ -18,7 +20,7 @@
 #           citerne = Citerne.find(params[:id])
 #           present citerne, with: CiterneEntity::Base
 #         end
-        
+
 #         desc 'Create a new citerne'
 #         params do
 #           requires :plate_number, type: String, desc: 'Plate number'
@@ -30,7 +32,7 @@
 #           citerne = Citerne.create!(declared(params))
 #           present citerne, with: CiterneEntity::Base
 #         end
-        
+
 #         desc 'Update a citerne'
 #         params do
 #           requires :id, type: Integer, desc: 'Citerne ID'
@@ -44,7 +46,7 @@
 #           citerne.update!(declared(params, include_missing: false))
 #           present citerne, with: CiterneEntity::Base
 #         end
-        
+
 #         desc 'Delete a citerne'
 #         params do
 #           requires :id, type: Integer, desc: 'Citerne ID'

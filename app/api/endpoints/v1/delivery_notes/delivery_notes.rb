@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 # module API
 #   module V1
 #     class DeliveryNotes < Grape::API
 #       # before { authenticate! }
-      
+
 #       resource :delivery_notes do
 #         desc 'Get all delivery notes'
 #         get do
 #           delivery_notes = DeliveryNote.includes(:employee, :truck, :citerne).all
 #           present delivery_notes, with: DeliveryNoteEntity::Base
 #         end
-        
+
 #         desc 'Get a specific delivery note'
 #         params do
 #           requires :id, type: Integer, desc: 'Delivery Note ID'
@@ -18,7 +20,7 @@
 #           delivery_note = DeliveryNote.includes(:employee, :truck, :citerne).find(params[:id])
 #           present delivery_note, with: DeliveryNoteEntity::Base
 #         end
-        
+
 #         desc 'Create a new delivery note'
 #         params do
 #           requires :number, type: String, desc: 'Delivery note number'
@@ -43,7 +45,7 @@
 #           delivery_note = DeliveryNote.create!(declared(params))
 #           present delivery_note, with: DeliveryNoteEntity::Base
 #         end
-        
+
 #         desc 'Update a delivery note'
 #         params do
 #           requires :id, type: Integer, desc: 'Delivery Note ID'
@@ -68,7 +70,7 @@
 #           delivery_note.update!(declared(params, include_missing: false))
 #           present delivery_note, with: DeliveryNoteEntity::Base
 #         end
-        
+
 #         desc 'Delete a delivery note'
 #         params do
 #           requires :id, type: Integer, desc: 'Delivery Note ID'

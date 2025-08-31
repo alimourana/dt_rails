@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 # module API
 #   module V1
 #     module Endpoints
 #       module BillingRates
 #         class Index < Grape::API
 #           extend Grape::API::Helpers
-          
+
 #           resource :billing_rates do
 #             namespace_setting(:category, "billing_rates")
-            
+
 #             desc 'Get all billing rates', {
 #               summary: 'Get all billing rates',
 #               detail: 'Get all billing rates',
@@ -31,7 +33,7 @@
 #   end
 # end
 
-#       resource :billing_rates do  
+#       resource :billing_rates do
 #         desc 'Get all billing rates', {
 #           summary: 'Get all billing rates',
 #           detail: 'Get all billing rates',
@@ -50,7 +52,7 @@
 #         end
 #       end
 
-#       resource :billing_rates do  
+#       resource :billing_rates do
 #         desc 'Get all billing rates', {
 #           summary: 'Get all billing rates',
 #           detail: 'Get all billing rates',
@@ -61,7 +63,7 @@
 #             { code: 404, message: 'Not Found' },
 #             { code: 500, message: 'Internal Server Error' }
 #           ]
-#         } 
+#         }
 #         endpoint "getBillingRates"
 #         get do
 #             billing_rates = BillingRate.all
@@ -69,8 +71,7 @@
 #         end
 #       end
 
-
-#       resource :billing_rates do  
+#       resource :billing_rates do
 #         desc 'Get a specific billing rate', {
 #           summary: 'Get a specific billing rate',
 #           detail: 'Get a specific billing rate with the given ID',
@@ -92,7 +93,7 @@
 #         end
 #       end
 
-#       resource :billing_rates do  
+#       resource :billing_rates do
 #         desc 'Create a new billing rate', {
 #           summary: 'Create a new billing rate',
 #           detail: 'Create a new billing rate with the given parameters',

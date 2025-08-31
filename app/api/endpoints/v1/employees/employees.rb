@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 # module API
 #   module V1
 #     class Employees < Grape::API
 #       # before { authenticate! }
-      
+
 #       resource :employees do
 #         desc 'Get all employees'
 #         get do
 #           employees = Employee.includes(:user).all
 #           present employees, with: EmployeeEntity::Base
 #         end
-        
+
 #         desc 'Get a specific employee'
 #         params do
 #           requires :id, type: Integer, desc: 'Employee ID'
@@ -18,7 +20,7 @@
 #           employee = Employee.includes(:user).find(params[:id])
 #           present employee, with: EmployeeEntity::Base
 #         end
-        
+
 #         desc 'Create a new employee'
 #         params do
 #           requires :user_id, type: Integer, desc: 'User ID'
@@ -32,7 +34,7 @@
 #           employee = Employee.create!(declared(params))
 #           present employee, with: EmployeeEntity::Base
 #         end
-        
+
 #         desc 'Update an employee'
 #         params do
 #           requires :id, type: Integer, desc: 'Employee ID'
@@ -46,7 +48,7 @@
 #           employee.update!(declared(params, include_missing: false))
 #           present employee, with: EmployeeEntity::Base
 #         end
-        
+
 #         desc 'Delete an employee'
 #         params do
 #           requires :id, type: Integer, desc: 'Employee ID'

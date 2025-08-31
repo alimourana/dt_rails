@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   has_one :employee, dependent: :destroy
-  
+
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -10,10 +12,10 @@ class User < ApplicationRecord
   validates :city, presence: true
   validates :state, presence: true
   validates :country, presence: true
-  validates :role, presence: true, inclusion: { in: %w[user admin manager] }
+  validates :role, inclusion: { in: %w(user admin manager) }
   validates :is_active, inclusion: { in: [true, false] }
-  
-  enum role: {
+
+  enum :role, {
     user: 0,
     admin: 1,
     manager: 2

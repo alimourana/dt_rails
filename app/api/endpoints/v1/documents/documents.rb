@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 # module API
 #   module V1
 #     class Documents < Grape::API
 #       # before { authenticate! }
-      
+
 #       resource :documents do
 #         desc 'Get all documents'
 #         get do
 #           documents = Document.includes(:employee, :truck, :citerne).all
 #           present documents, with: DocumentEntity::Base
 #         end
-        
+
 #         desc 'Get a specific document'
 #         params do
 #           requires :id, type: Integer, desc: 'Document ID'
@@ -18,7 +20,7 @@
 #           document = Document.includes(:employee, :truck, :citerne).find(params[:id])
 #           present document, with: DocumentEntity::Base
 #         end
-        
+
 #         desc 'Create a new document'
 #         params do
 #           requires :title, type: String, desc: 'Document title'
@@ -37,7 +39,7 @@
 #           document = Document.create!(declared(params))
 #           present document, with: DocumentEntity::Base
 #         end
-        
+
 #         desc 'Update a document'
 #         params do
 #           requires :id, type: Integer, desc: 'Document ID'
@@ -58,7 +60,7 @@
 #           document.update!(declared(params, include_missing: false))
 #           present document, with: DocumentEntity::Base
 #         end
-        
+
 #         desc 'Delete a document'
 #         params do
 #           requires :id, type: Integer, desc: 'Document ID'

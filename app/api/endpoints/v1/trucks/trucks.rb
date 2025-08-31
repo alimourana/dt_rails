@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 # module API
 #   module V1
 #     class Trucks < Grape::API
 #       # before { authenticate! }
-      
+
 #       resource :trucks do
 #         desc 'Get all trucks'
 #         get do
 #           trucks = Truck.includes(:employee, :citerne).all
 #           present trucks, with: TruckEntity::Base
 #         end
-        
+
 #         desc 'Get a specific truck'
 #         params do
 #           requires :id, type: Integer, desc: 'Truck ID'
@@ -18,7 +20,7 @@
 #           truck = Truck.includes(:employee, :citerne).find(params[:id])
 #           present truck, with: TruckEntity::Base
 #         end
-        
+
 #         desc 'Create a new truck'
 #         params do
 #           requires :make, type: String, desc: 'Truck make'
@@ -33,7 +35,7 @@
 #           truck = Truck.create!(declared(params))
 #           present truck, with: TruckEntity::Base
 #         end
-        
+
 #         desc 'Update a truck'
 #         params do
 #           requires :id, type: Integer, desc: 'Truck ID'
@@ -50,7 +52,7 @@
 #           truck.update!(declared(params, include_missing: false))
 #           present truck, with: TruckEntity::Base
 #         end
-        
+
 #         desc 'Delete a truck'
 #         params do
 #           requires :id, type: Integer, desc: 'Truck ID'
