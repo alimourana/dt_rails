@@ -1,12 +1,18 @@
+# frozen_string_literal: true
+
 module Endpoints
   module V1
     module Users
       class Delete < Grape::API
-        include Users::Common
+        include V1::Users::Common
+
+        before do
+          user_exists!
+        end
 
         resource :users do
-          namespace_setting(:category, "users")
-          
+          namespace_setting(:category, 'users')
+
           desc 'Delete a user', {
             summary: 'Delete a user',
             detail: 'Delete a user with the given ID',
@@ -20,7 +26,6 @@ module Endpoints
               { code: 500, message: 'Internal Server Error' }
             ]
           }
-          # endpoint "deleteUser"
           params do
             requires :id, type: Integer, desc: 'User ID'
           end

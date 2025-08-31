@@ -1,11 +1,18 @@
+# frozen_string_literal: true
+
 module Endpoints
   module V1
     module Users
       class Get < Grape::API
-      
+        include V1::Users::Common
+
+        before do
+          user_exists!
+        end
+
         resource :users do
-          namespace_setting(:category, "users")
-        
+          namespace_setting(:category, 'users')
+
           desc 'Get a specific user', {
             summary: 'Get a specific user',
             detail: 'Get a specific user with the given ID',
@@ -19,12 +26,10 @@ module Endpoints
               { code: 500, message: 'Internal Server Error' }
             ]
           }
-          # endpoint "getUser"
           params do
             requires :id, type: Integer, desc: 'User ID'
           end
           get ':id' do
-            user = User.find(params[:id])
             present user, with: Entities::User
           end
         end
@@ -32,5 +37,3 @@ module Endpoints
     end
   end
 end
-
-

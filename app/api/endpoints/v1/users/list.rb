@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 module Endpoints
   module V1
     module Users
       class List < Grape::API
+        include V1::Users::Common
+
         resource :users do
-          namespace_setting(:category, "users")
+          namespace_setting(:category, 'users')
 
           desc 'Get all users', {
             summary: 'Get all users',
@@ -13,10 +17,9 @@ module Endpoints
             ],
             failure: [
               { code: 400, message: 'Bad Request' },
-              { code: 401, message: 'Unauthorized' },
+              { code: 401, message: 'Unauthorized' }
             ]
           }
-          # endpoint "getAllUsers"
           get do
             users = User.all
             present users, with: Entities::Users
