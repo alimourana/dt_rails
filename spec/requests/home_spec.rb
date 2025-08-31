@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+# # frozen_string_literal: true
 
-RSpec.describe "Home", type: :request do
-  # describe "GET /" do
-  #   it "returns http success" do
-  #     get "/"
-  #     expect(response).to have_http_status(:success)
-  #   end
+# require 'rails_helper'
 
-  #   it "displays the welcome message" do
-  #     get "/"
-  #     expect(response.body).to include("Welcome to DT Rails!")
-  #   end
-  # end
-end
+# RSpec.describe 'Home', type: :request do
+#   describe "GET /" do
+#     it "returns http success" do
+#       get "/"
+#       expect(response).to have_http_status(:success)
+#     end
+
+#     it "displays the welcome message" do
+#       get "/"
+#       expect(response.body).to include("Welcome to DT Rails!")
+#     end
+#   end
+# end

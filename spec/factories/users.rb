@@ -2,29 +2,49 @@
 
 FactoryBot.define do
   factory :user do
-    first_name { Faker::Name.first_name }
-    last_name { Faker::Name.last_name }
-    email { Faker::Internet.unique.email }
-    phone_number { Faker::PhoneNumber.phone_number }
-    address_line { Faker::Address.street_address }
-    city { Faker::Address.city }
-    state { Faker::Address.state }
-    country { Faker::Address.country }
-    role { %w[user admin manager].sample }
-    is_active { [true, false].sample }
-    encrypted_password { "password123" }
+    first_name do
+      Faker::Name.first_name
+    end
+    last_name do
+      Faker::Name.last_name
+    end
+    email do
+      Faker::Internet.unique.email
+    end
+    phone_number do
+      Faker::PhoneNumber.phone_number
+    end
+    address_line do
+      Faker::Address.street_address
+    end
+    city do
+      Faker::Address.city
+    end
+    state do
+      Faker::Address.state
+    end
+    country do
+      Faker::Address.country
+    end
+    role do
+      %w(user admin manager).sample
+    end
+    is_active do
+      [true, false].sample
+    end
+    encrypted_password { 'password123' }
   end
 
   trait :admin do
-    role { "admin" }
+    role { 'admin' }
   end
 
   trait :manager do
-    role { "manager" }
+    role { 'manager' }
   end
 
   trait :regular_user do
-    role { "user" }
+    role { 'user' }
   end
 
   trait :active do
