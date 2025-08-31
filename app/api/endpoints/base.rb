@@ -1,9 +1,7 @@
+# frozen_string_literal: true
+
 module Endpoints
   class Base < Grape::API
-    version 'v1', using: :path
-    format :json
-    prefix :api
-
     # Users
     mount Endpoints::V1::Users::Delete
     mount Endpoints::V1::Users::Create

@@ -7,11 +7,19 @@ module Endpoints
         extend ActiveSupport::Concern
 
         included do
+          include Endpoints::ApiDefault
+
           helpers do
+            def user
+              @user ||= if params[:id]
+                          User.find(params[:id])
+                        else
+                          User.find_by(email: params[:email])
+                        end
+            end
+
             def user_exists!
-              user = User.find_by(email: params[:email])
-        
-              if user
+              if user.present?
                 error!(Strings::ERROR_USER_EXISTS, 401)
               end
             end
