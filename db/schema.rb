@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_25_175640) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_31_160159) do
   create_table "billing_rates", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "origin", null: false
     t.string "destination", null: false
@@ -26,6 +26,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_25_175640) do
     t.string "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["chassis_number"], name: "index_citernes_on_chassis_number", unique: true
+    t.index ["plate_number"], name: "index_citernes_on_plate_number", unique: true
   end
 
   create_table "delivery_notes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -50,6 +52,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_25_175640) do
     t.datetime "updated_at", null: false
     t.index ["citernes_id"], name: "index_delivery_notes_on_citernes_id"
     t.index ["employee_id"], name: "index_delivery_notes_on_employee_id"
+    t.index ["number"], name: "index_delivery_notes_on_number", unique: true
     t.index ["truck_id"], name: "index_delivery_notes_on_truck_id"
   end
 
@@ -81,6 +84,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_25_175640) do
     t.string "salary"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["matricule"], name: "index_employees_on_matricule", unique: true
     t.index ["user_id"], name: "index_employees_on_user_id"
   end
 
@@ -96,6 +100,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_25_175640) do
     t.datetime "updated_at", null: false
     t.index ["citernes_id"], name: "index_trucks_on_citernes_id"
     t.index ["employee_id"], name: "index_trucks_on_employee_id"
+    t.index ["plate_number"], name: "index_trucks_on_plate_number", unique: true
+    t.index ["vin"], name: "index_trucks_on_vin", unique: true
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -112,6 +118,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_25_175640) do
     t.boolean "is_active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "delivery_notes", "citernes", column: "citernes_id"
