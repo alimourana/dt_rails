@@ -3,6 +3,18 @@
 class User < ApplicationRecord
   has_one :employee, dependent: :destroy
 
+  has_many :access_grants,
+           class_name: 'Doorkeeper::AccessGrant',
+           foreign_key: :resource_owner_id,
+           dependent: :delete_all # or :destroy if you need callbacks
+
+  has_many :access_tokens,
+           class_name: 'Doorkeeper::AccessToken',
+           foreign_key: :resource_owner_id,
+           dependent: :delete_all # or :destroy if you need callbacks
+
+  has_many :oauth_applications, class_name: 'OauthApplication', as: :owner
+
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
