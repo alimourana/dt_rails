@@ -76,6 +76,7 @@ group :test do
   gem 'shoulda-matchers'
 end
 
+gem 'doorkeeper'
 gem 'grape', '~> 2.4'
 gem 'grape-entity', '~> 1.0', '>= 1.0.1'
 gem 'grape_on_rails_routes', '~> 0.3.2'
