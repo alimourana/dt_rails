@@ -8,7 +8,7 @@ class Oauth::ApplicationsController < ApplicationController
   # GET /oauth/applications
   def index
     @applications = policy_scope(OauthApplication)
-    authorize @applications
+    authorize OauthApplication
   end
 
   # GET /oauth/applications/1
@@ -31,7 +31,7 @@ class Oauth::ApplicationsController < ApplicationController
   def create
     @application = OauthApplication.new(application_params)
     @application.owner = current_user
-    @application.created_by = current_user
+    @application.created_by_id = current_user.id
 
     authorize @application
 
