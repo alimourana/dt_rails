@@ -33,6 +33,18 @@ class User < ApplicationRecord
     manager: 2
   }
 
+  # Authentication methods
+  def self.authenticate(email, password)
+    user = find_by(email: email, is_active: true)
+    return nil unless user
+    return user if user.encrypted_password == password # Simple password check for now
+    nil
+  end
+
+  def self.find_by_credentials(email, password)
+    authenticate(email, password)
+  end
+
   def full_name
     "#{first_name} #{last_name}"
   end
