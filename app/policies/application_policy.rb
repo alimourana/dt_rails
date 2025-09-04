@@ -9,15 +9,15 @@ class ApplicationPolicy
   end
 
   def index?
-    false
+    user.present?
   end
 
   def show?
-    false
+    user.present? && (record.owner == user || user.admin?)
   end
 
   def create?
-    false
+    user.present?
   end
 
   def new?
@@ -25,7 +25,7 @@ class ApplicationPolicy
   end
 
   def update?
-    false
+    user.present? && (record.owner == user || user.admin?)
   end
 
   def edit?
@@ -33,7 +33,7 @@ class ApplicationPolicy
   end
 
   def destroy?
-    false
+    user.present? && (record.owner == user || user.admin?)
   end
 
   class Scope
@@ -45,7 +45,11 @@ class ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      if user.admin?
+        scope.all
+      else
+        scope.where(owner: user)
+      end
     end
   end
 end
