@@ -129,8 +129,8 @@ module Endpoints
       end
 
       def handle_password_grant
-        user = User.find_by_credentials(params[:username], params[:password])
-        error!('Invalid credentials', 400) unless user
+        user = User.find_by(email: params[:username])
+        error!('Invalid credentials', 400) unless user&.valid_password?(params[:password]) && user.active_for_authentication?
 
         application = OauthApplication.find_by(uid: params[:client_id])
         error!('Invalid client', 400) unless application
