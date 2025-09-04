@@ -52,9 +52,15 @@ db-status: ## Check database migration status
 db-console: ## Open database console
 	docker-compose exec db mysql -u rails -p dt_rails_development
 
+redis-console: ## Open Redis console
+	docker-compose exec redis redis-cli
+
+redis-logs: ## Show Redis logs
+	docker-compose logs -f redis
+
 setup: ## Initial setup - build, create database, run migrations
 	docker-compose build
-	docker-compose up -d db
+	docker-compose up -d db redis
 	sleep 5
 	docker-compose exec web rails db:create db:migrate
 
@@ -67,7 +73,7 @@ full-clean: ## Remove all containers, networks, and volumes (WARNING: deletes da
 
 db-reset: ## Reset database (WARNING: deletes all data)
 	docker-compose down -v
-	docker-compose up -d db
+	docker-compose up -d db redis
 	sleep 5
 	docker-compose exec web rails db:create db:migrate
 

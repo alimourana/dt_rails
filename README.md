@@ -7,6 +7,7 @@ A modern, dockerized Ruby on Rails 7.1 application with PostgreSQL database, des
 - **Ruby 3.2.2** - Latest stable Ruby version
 - **Rails 7.1** - Modern Rails framework with latest features
 - **MySQL 8.0** - Robust, production-ready database
+- **Redis 7** - High-performance in-memory data store for caching
 - **Docker & Docker Compose** - Containerized development environment
 - **Puma** - High-performance web server
 - **Hot Reloading** - Automatic code reloading in development
@@ -32,7 +33,8 @@ make start
 
 This will:
 - Build the Docker images
-- Start PostgreSQL database
+- Start MySQL database
+- Start Redis server
 - Start the Rails application
 - Make it available at http://localhost:3000
 
@@ -61,6 +63,12 @@ make console
 
 # Open database console
 make db-console
+
+# Open Redis console
+make redis-console
+
+# View Redis logs
+make redis-logs
 
 # Restart the application
 make restart
@@ -105,10 +113,18 @@ The application uses MySQL with the following default configuration:
 - **Username**: `rails`
 - **Password**: `password`
 
+### Redis
+The application uses Redis for caching and session storage:
+- **Host**: `redis` (Docker service name)
+- **Port**: `6379`
+- **Database**: `0` (default)
+- **URL**: `redis://redis:6379/0`
+
 ### Environment Variables
 Key environment variables can be configured in `docker-compose.yml`:
 - `RAILS_ENV`: Application environment (development/production)
 - `DATABASE_URL`: Database connection string
+- `REDIS_URL`: Redis connection string
 - `PORT`: Application port (default: 3000)
 
 ## 🛠️ Development
@@ -164,6 +180,44 @@ rails generate migration CreateUsers name:string email:string
 # Run migrations
 make console
 rails db:migrate
+```
+
+### Redis Usage
+The application includes a `RedisService` class for easy Redis operations:
+
+```ruby
+# Basic operations
+RedisService.set('key', 'value')
+RedisService.get('key')
+RedisService.delete('key')
+RedisService.exists?('key')
+
+# Caching with expiration
+RedisService.cache('expensive_operation', expire_in: 1.hour) do
+  # Expensive computation here
+  result
+end
+
+# JSON caching
+RedisService.cache_json('user_data', { name: 'John', age: 30 })
+user_data = RedisService.get_json('user_data')
+
+# Server info
+RedisService.ping
+RedisService.info
+
+# Direct Redis access (if needed)
+$redis.get('key')
+$redis.set('key', 'value')
+```
+
+Access Redis directly:
+```bash
+# Open Redis CLI
+make redis-console
+
+# View Redis logs
+make redis-logs
 ```
 
 ### Viewing Logs

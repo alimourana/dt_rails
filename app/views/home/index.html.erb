@@ -4,7 +4,7 @@
     <p class="text-xl text-gray-600">Your dockerized Ruby on Rails application is running successfully.</p>
   </div>
 
-  <div class="grid md:grid-cols-2 gap-6 mb-8">
+  <div class="grid md:grid-cols-3 gap-6 mb-8">
     <div class="bg-white p-6 rounded-lg shadow-md border">
       <h3 class="text-xl font-semibold text-gray-800 mb-3">🚀 Rails Features</h3>
       <ul class="text-gray-600 space-y-2">
@@ -26,6 +26,18 @@
         <li>• Development-friendly</li>
       </ul>
     </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md border">
+      <h3 class="text-xl font-semibold text-gray-800 mb-3">🔴 Redis Status</h3>
+      <div class="text-gray-600 space-y-2">
+        <div class="flex items-center">
+          <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+          <span>Status: <%= @redis_status %></span>
+        </div>
+        <div>Page Views: <%= @page_views %></div>
+        <div class="text-sm text-gray-500">Cached Time: <%= @cached_time %></div>
+      </div>
+    </div>
   </div>
 
   <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
@@ -39,6 +51,8 @@
       <div class="text-yellow-400">make stop</div>
       <div class="mb-2 mt-3"># Rails console:</div>
       <div class="text-yellow-400">make console</div>
+      <div class="mb-2 mt-3"># Redis console:</div>
+      <div class="text-yellow-400">make redis-console</div>
       <div class="mb-2 mt-3"># View all commands:</div>
       <div class="text-yellow-400">make help</div>
     </div>
