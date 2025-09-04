@@ -352,6 +352,38 @@ if delivery_notes.count < 20
   end
 end
 
+puts "🔐 Creating OAuth Applications..."
+
+# Create a test OAuth application
+test_app = OauthApplication.create!(
+  name: 'Test OAuth Application',
+  uid: 'test_app_123',
+  secret: 'test_secret_456',
+  redirect_uri: 'http://localhost:3000/callback',
+  scopes: 'read write',
+  confidential: true,
+  owner: users.first,
+  created_by: users.first
+)
+
+# Create an admin user for testing
+admin_user = User.create!(
+  first_name: 'Admin',
+  last_name: 'User',
+  email: 'admin@dtrails.gn',
+  encrypted_password: 'admin123',
+  phone_number: '+224 6 12345678',
+  address_line: '123 Admin Street',
+  city: 'Conakry',
+  state: 'Conakry',
+  country: 'Guinea',
+  role: 'admin',
+  is_active: true
+)
+
+puts " ✅ Created OAuth application: #{test_app.name}"
+puts " ✅ Created admin user: #{admin_user.email}"
+
 puts "\n🎉 Seed process completed successfully!"
 puts "📊 Final record counts:"
 puts "   Users: #{User.count}"
@@ -361,7 +393,9 @@ puts "   Trucks: #{Truck.count}"
 puts "   Billing Rates: #{BillingRate.count}"
 puts "   Documents: #{Document.count}"
 puts "   Delivery Notes: #{DeliveryNote.count}"
+puts "   OAuth Applications: #{OauthApplication.count}"
 
 puts "\n✅ All tables now contain at least 20 records with data compliant with Guinean laws!"
 puts "🌍 Data includes realistic Guinean cities, regions, names, and business practices."
 puts "🚛 Fuel distribution company data with proper vehicle registrations and compliance."
+puts "🔐 OAuth2 authentication system with test application and admin user ready!"
