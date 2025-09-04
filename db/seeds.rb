@@ -5,13 +5,13 @@ puts "🌱 Starting seed process..."
 
 # Clear existing data
 puts "🧹 Clearing existing data..."
-User.destroy_all
-Employee.destroy_all
+DeliveryNote.destroy_all
+Document.destroy_all
 Truck.destroy_all
+Employee.destroy_all
 Citerne.destroy_all
 BillingRate.destroy_all
-Document.destroy_all
-DeliveryNote.destroy_all
+User.destroy_all
 
 # Guinean cities and regions
 guinean_cities = [
@@ -74,14 +74,16 @@ users = []
       'Diallo', 'Camara', 'Bah', 'Barry'
     ][i],
     email: "user#{i+1}@dtrails.gn",
-    encrypted_password: "password123",
+    password: "password123",
+    password_confirmation: "password123",
     phone_number: "#{phone_prefixes.sample} #{rand(10000000..99999999)}",
     address_line: "#{rand(1..999)} #{['Rue', 'Avenue', 'Boulevard'].sample} #{['Liberté', 'Indépendance', 'Victoire', 'Paix', 'Unité'].sample}",
     city: guinean_cities.sample,
     state: guinean_regions.sample,
     country: 'Guinea',
     role: ['user', 'admin', 'manager'].sample,
-    is_active: [true, false].sample
+    is_active: [true, false].sample,
+    confirmed_at: Time.current
   )
   users << user
   print "."
@@ -134,7 +136,7 @@ trucks = []
     status: vehicle_statuses.sample,
     vin: "VIN#{sprintf('%012d', rand(100000000000..999999999999))}",
     employee: employees.sample,
-    citernes: citernes.sample
+    citerne: citernes.sample
   )
   trucks << truck
   print "."
@@ -184,14 +186,14 @@ documents = []
     ][i],
     description: "Document #{i+1} for operational purposes",
     file_path: "/documents/#{i+1}.pdf",
-    type: document_types.sample,
+    document_type: document_types.sample,
     number: "DOC#{sprintf('%04d', i+1)}",
     status: document_statuses.sample,
     delivery_date: rand(1..365).days.ago,
     expiry_date: rand(1..365).days.from_now,
     employee: employees.sample,
     truck: trucks.sample,
-    citernes: citernes.sample
+    citerne: citernes.sample
   )
   documents << document
   print "."
@@ -225,7 +227,7 @@ delivery_notes = []
     return_date: rand(1..3).days.ago,
     employee: employees.sample,
     truck: trucks.sample,
-    citernes: citernes.sample
+    citerne: citernes.sample
   )
   delivery_notes << delivery_note
   print "."
@@ -241,14 +243,16 @@ if users.count < 20
       first_name: "Additional#{i+1}",
       last_name: "User#{i+1}",
       email: "additional#{i+1}@dtrails.gn",
-      encrypted_password: "password123",
+      password: "password123",
+      password_confirmation: "password123",
       phone_number: "#{phone_prefixes.sample} #{rand(10000000..99999999)}",
       address_line: "#{rand(1..999)} Additional Street",
       city: guinean_cities.sample,
       state: guinean_regions.sample,
       country: 'Guinea',
       role: 'user',
-      is_active: true
+      is_active: true,
+      confirmed_at: Time.current
     )
   end
 end
@@ -313,14 +317,14 @@ if documents.count < 20
       title: "Additional Document #{i+1}",
       description: "Additional document for compliance",
       file_path: "/documents/additional#{i+1}.pdf",
-      type: document_types.sample,
+      document_type: document_types.sample,
       number: "DOC#{sprintf('%04d', 1000+i)}",
       status: 'active',
       delivery_date: rand(1..365).days.ago,
       expiry_date: rand(1..365).days.from_now,
           employee: employees.sample,
     truck: trucks.sample,
-    citernes: citernes.sample
+    citerne: citernes.sample
     )
   end
 end
@@ -347,7 +351,7 @@ if delivery_notes.count < 20
       return_date: rand(1..3).days.ago,
       employee: employees.sample,
       truck: trucks.sample,
-      citernes: citernes.sample
+      citerne: citernes.sample
     )
   end
 end
@@ -363,7 +367,7 @@ test_app = OauthApplication.create!(
   scopes: 'read write',
   confidential: true,
   owner: users.first,
-  created_by: users.first
+  created_by_id: users.first.id
 )
 
 # Create an admin user for testing
@@ -371,14 +375,16 @@ admin_user = User.create!(
   first_name: 'Admin',
   last_name: 'User',
   email: 'admin@dtrails.gn',
-  encrypted_password: 'admin123',
+  password: 'admin123',
+  password_confirmation: 'admin123',
   phone_number: '+224 6 12345678',
   address_line: '123 Admin Street',
   city: 'Conakry',
   state: 'Conakry',
   country: 'Guinea',
   role: 'admin',
-  is_active: true
+  is_active: true,
+  confirmed_at: Time.current
 )
 
 puts " ✅ Created OAuth application: #{test_app.name}"
