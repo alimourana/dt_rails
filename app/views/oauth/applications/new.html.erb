@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h1>New OAuth Application</h1>
+        </div>
+        <div class="card-body">
+          <%= form_with model: @application, url: oauth_applications_path, local: true do |form| %>
+            <% if @application.errors.any? %>
+              <div class="alert alert-danger">
+                <h4><%= pluralize(@application.errors.count, "error") %> prohibited this application from being saved:</h4>
+                <ul>
+                  <% @application.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="form-group mb-3">
+              <%= form.label :name, class: 'form-label' %>
+              <%= form.text_field :name, class: 'form-control', required: true %>
+            </div>
+
+            <div class="form-group mb-3">
+              <%= form.label :redirect_uri, class: 'form-label' %>
+              <%= form.url_field :redirect_uri, class: 'form-control', required: true, 
+                  placeholder: 'https://example.com/callback' %>
+              <div class="form-text">The URI to redirect to after authorization.</div>
+            </div>
+
+            <div class="form-group mb-3">
+              <%= form.label :scopes, class: 'form-label' %>
+              <%= form.text_field :scopes, class: 'form-control', 
+                  placeholder: 'read write' %>
+              <div class="form-text">Space-separated list of scopes (e.g., read write).</div>
+            </div>
+
+            <div class="form-check mb-3">
+              <%= form.check_box :confidential, class: 'form-check-input' %>
+              <%= form.label :confidential, 'Confidential Application', class: 'form-check-label' %>
+              <div class="form-text">Confidential applications can securely store client secrets.</div>
+            </div>
+
+            <div class="form-actions">
+              <%= form.submit 'Create Application', class: 'btn btn-primary' %>
+              <%= link_to 'Cancel', oauth_applications_path, class: 'btn btn-secondary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
