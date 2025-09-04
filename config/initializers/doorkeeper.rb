@@ -16,7 +16,7 @@ Doorkeeper.configure do
     # Put your resource owner authentication logic here.
     # Example implementation:
     #   User.find_by(id: session[:user_id]) || redirect_to(new_user_session_url)
-    current_user || redirect_to(new_user_session_url(next: request.original_url))
+    current_user || redirect_to(new_user_session_url)
   end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
@@ -31,7 +31,7 @@ Doorkeeper.configure do
     if current_user
       head :forbidden unless current_user.admin?
     else
-      redirect_to sign_in_url
+      redirect_to new_user_session_url
     end
   end
 
