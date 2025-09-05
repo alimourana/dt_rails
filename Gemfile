@@ -30,7 +30,7 @@ gem "redis", "~> 5.0"
 gem "hiredis", "~> 0.6"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
-# gem "kredis"
+gem "kredis"
 
 # Use Active Model has_secure_password
 # gem "bcrypt", "~> 3.1.7"
