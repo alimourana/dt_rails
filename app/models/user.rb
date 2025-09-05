@@ -20,6 +20,13 @@ class User < ApplicationRecord
 
   has_many :oauth_applications, class_name: 'OauthApplication', as: :owner
 
+  # Kredis data structures
+  kredis_json "preferences"
+  kredis_counter "page_views"
+  kredis_list "recent_searches"
+  kredis_set "favorite_oauth_apps"
+  kredis_flag "email_notifications"
+
   # Custom validations
   validates :first_name, presence: true
   validates :last_name, presence: true
