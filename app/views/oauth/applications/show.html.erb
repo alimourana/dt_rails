@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><%= @application.name %></h1>
+    <div>
+      <%= link_to 'Edit', edit_oauth_application_path(@application), class: 'btn btn-primary' %>
+      <%= link_to 'Back', oauth_applications_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5>Application Details</h5>
+        </div>
+        <div class="card-body">
+          <dl class="row">
+            <dt class="col-sm-3">Name:</dt>
+            <dd class="col-sm-9"><%= @application.name %></dd>
+            
+            <dt class="col-sm-3">Client ID:</dt>
+            <dd class="col-sm-9"><code><%= @application.uid %></code></dd>
+            
+            <dt class="col-sm-3">Client Secret:</dt>
+            <dd class="col-sm-9"><code><%= @application.secret %></code></dd>
+            
+            <dt class="col-sm-3">Redirect URI:</dt>
+            <dd class="col-sm-9"><%= @application.redirect_uri %></dd>
+            
+            <dt class="col-sm-3">Scopes:</dt>
+            <dd class="col-sm-9"><%= @application.scopes.present? ? @application.scopes : 'None' %></dd>
+            
+            <dt class="col-sm-3">Confidential:</dt>
+            <dd class="col-sm-9"><%= @application.confidential? ? 'Yes' : 'No' %></dd>
+            
+            <dt class="col-sm-3">Created:</dt>
+            <dd class="col-sm-9"><%= @application.created_at.strftime('%B %d, %Y at %I:%M %p') %></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h5>Quick Actions</h5>
+        </div>
+        <div class="card-body">
+          <%= link_to 'Edit Application', edit_oauth_application_path(@application), class: 'btn btn-primary btn-block mb-2' %>
+          <%= link_to 'Delete Application', oauth_application_path(@application), 
+              method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-block' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
