@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :track_page_view, if: :user_signed_in?
   before_action :check_rate_limit, if: :should_rate_limit?
+  before_action :ensure_admin_user!, if: :active_admin_controller?
 
   private
 
@@ -50,5 +51,19 @@ class ApplicationController < ActionController::Base
   def should_rate_limit?
     # Only rate limit API endpoints
     request.path.start_with?('/api/') || request.path.start_with?('/oauth/')
+  end
+
+  def access_denied(exception)
+    redirect_to root_path, alert: 'Access denied. Admin privileges required.'
+  end
+
+  def ensure_admin_user!
+    unless current_user&.admin?
+      redirect_to root_path, alert: 'Access denied. Admin privileges required.'
+    end
+  end
+
+  def active_admin_controller?
+    self.class.name.start_with?('ActiveAdmin::')
   end
 end
