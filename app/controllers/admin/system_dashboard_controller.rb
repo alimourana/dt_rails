@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Admin::DashboardController < ApplicationController
+class Admin::SystemDashboardController < ApplicationController
   before_action :ensure_admin!
 
   def index
@@ -23,13 +23,13 @@ class Admin::DashboardController < ApplicationController
       flash[:notice] = 'Maintenance mode enabled'
     end
     
-    redirect_to admin_dashboard_path
+    redirect_to admin_system_dashboard_path
   end
 
   def update_system_health
     KredisService.update_system_health
     flash[:notice] = 'System health updated'
-    redirect_to admin_dashboard_path
+    redirect_to admin_system_dashboard_path
   end
 
   private

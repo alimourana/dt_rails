@@ -13,6 +13,9 @@ gem 'rails', '~> 7.1.0'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
+# CSS compilation for Active Admin
+gem 'sassc-rails', '~> 2.1'
+
 # Use importmap-rails for JavaScript handling
 # gem "importmap-rails"
 
@@ -83,3 +86,4 @@ gem 'grape-entity', '~> 1.0', '>= 1.0.1'
 gem 'grape_on_rails_routes', '~> 0.3.2'
 gem 'pundit'
 gem 'devise'
+gem 'activeadmin'

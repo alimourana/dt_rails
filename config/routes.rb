@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
+
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions'
@@ -16,9 +18,9 @@ Rails.application.routes.draw do
 
   # Admin routes
   namespace :admin do
-    get 'dashboard', to: 'dashboard#index'
-    post 'dashboard/toggle_maintenance_mode', to: 'dashboard#toggle_maintenance_mode'
-    post 'dashboard/update_system_health', to: 'dashboard#update_system_health'
+    get 'system_dashboard', to: 'system_dashboard#index'
+    post 'system_dashboard/toggle_maintenance_mode', to: 'system_dashboard#toggle_maintenance_mode'
+    post 'system_dashboard/update_system_health', to: 'system_dashboard#update_system_health'
   end
 
   mount ::Endpoints::Base => '/'
