@@ -8,6 +8,7 @@ A modern, dockerized Ruby on Rails 7.1 application with PostgreSQL database, des
 - **Rails 7.1** - Modern Rails framework with latest features
 - **MySQL 8.0** - Robust, production-ready database
 - **Redis 7** - High-performance in-memory data store for caching
+- **Kredis** - High-level Redis data structures and Rails integration
 - **OAuth2 Authentication** - Complete OAuth2 server implementation with Doorkeeper
 - **Docker & Docker Compose** - Containerized development environment
 - **Puma** - High-performance web server
@@ -184,8 +185,9 @@ rails db:migrate
 ```
 
 ### Redis Usage
-The application includes a `RedisService` class for easy Redis operations:
+The application includes both low-level Redis operations and high-level Kredis abstractions:
 
+#### Basic Redis Operations (RedisService)
 ```ruby
 # Basic operations
 RedisService.set('key', 'value')
@@ -206,15 +208,60 @@ user_data = RedisService.get_json('user_data')
 # Server info
 RedisService.ping
 RedisService.info
-
-# Direct Redis access (if needed)
-$redis.get('key')
-$redis.set('key', 'value')
 ```
 
-Access Redis directly:
+#### Kredis High-Level Data Structures
+```ruby
+# User model with Kredis
+user = User.find(1)
+
+# JSON data (preferences, settings)
+user.preferences.value = { theme: 'dark', language: 'en' }
+prefs = user.preferences.value
+
+# Counters (page views, API calls)
+user.page_views.increment
+user.page_views.value # => 42
+
+# Lists (recent searches, activities)
+user.recent_searches.prepend('search term')
+user.recent_searches.elements # => ['search term', ...]
+
+# Sets (favorite apps, tags)
+user.favorite_oauth_apps.add('app_id')
+user.favorite_oauth_apps.members # => ['app_id', ...]
+
+# Flags (boolean settings)
+user.email_notifications.mark!
+user.email_notifications.marked? # => true
+```
+
+#### Global KredisService Features
+```ruby
+# Track API usage
+KredisService.track_api_request('/api/v1/users', user_id)
+
+# Track OAuth token issuance
+KredisService.track_oauth_token_issuance(app_id, user_id)
+
+# Rate limiting
+KredisService.check_rate_limit(identifier, limit: 100, window: 1.hour)
+
+# System health monitoring
+KredisService.update_system_health
+health = KredisService.system_health.value
+
+# Maintenance mode
+KredisService.enable_maintenance_mode
+KredisService.disable_maintenance_mode
+```
+
+#### Demo Kredis Features
 ```bash
-# Open Redis CLI
+# Run the Kredis demonstration
+docker-compose exec web rails kredis:demo
+
+# Access Redis directly
 make redis-console
 
 # View Redis logs

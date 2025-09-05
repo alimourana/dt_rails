@@ -28,6 +28,11 @@
               <li class="nav-item">
                 <%= link_to "OAuth Apps", oauth_applications_path, class: "nav-link" %>
               </li>
+              <% if current_user.admin? %>
+                <li class="nav-item">
+                  <%= link_to "Admin Dashboard", admin_dashboard_path, class: "nav-link" %>
+                </li>
+              <% end %>
             <% end %>
           </ul>
           

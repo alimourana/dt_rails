@@ -14,6 +14,13 @@ Rails.application.routes.draw do
   # OAuth application management routes
   resources :oauth_applications, path: 'oauth/applications'
 
+  # Admin routes
+  namespace :admin do
+    get 'dashboard', to: 'dashboard#index'
+    post 'dashboard/toggle_maintenance_mode', to: 'dashboard#toggle_maintenance_mode'
+    post 'dashboard/update_system_health', to: 'dashboard#update_system_health'
+  end
+
   mount ::Endpoints::Base => '/'
   # Defines the root path route ("/")
   root "home#index"

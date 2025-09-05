@@ -1,19 +1,14 @@
 # frozen_string_literal: true
 
-class ApplicationController < ActionController::Base
-  include Pundit::Authorization
+module KredisTracking
+  extend ActiveSupport::Concern
 
-  before_action :authenticate_user!
-  before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :track_page_view, if: :user_signed_in?
-  before_action :check_rate_limit, if: :should_rate_limit?
+  included do
+    before_action :track_page_view, if: :user_signed_in?
+    before_action :check_rate_limit, if: :should_rate_limit?
+  end
 
   private
-
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :phone_number, :address_line, :city, :state, :country, :role, :is_active])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :phone_number, :address_line, :city, :state, :country, :role, :is_active])
-  end
 
   def track_page_view
     return unless current_user
