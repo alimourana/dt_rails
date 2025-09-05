@@ -361,7 +361,7 @@ puts "🔐 Creating OAuth Applications..."
 # Create a test OAuth application
 test_app = OauthApplication.create!(
   name: 'Test OAuth Application',
-  uid: 'test_app_123',
+  uid: "test_app_#{SecureRandom.hex(8)}",
   secret: 'test_secret_456',
   redirect_uri: 'http://localhost:3000/callback',
   scopes: 'read write',
@@ -405,3 +405,6 @@ puts "\n✅ All tables now contain at least 20 records with data compliant with 
 puts "🌍 Data includes realistic Guinean cities, regions, names, and business practices."
 puts "🚛 Fuel distribution company data with proper vehicle registrations and compliance."
 puts "🔐 OAuth2 authentication system with test application and admin user ready!"
+
+# Note: Active Admin now uses the existing User model with admin role
+puts "👑 Active Admin configured to use existing User model with admin role"
