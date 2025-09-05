@@ -7,10 +7,12 @@ A modern, dockerized Ruby on Rails 7.1 application with PostgreSQL database, des
 - **Ruby 3.2.2** - Latest stable Ruby version
 - **Rails 7.1** - Modern Rails framework with latest features
 - **MySQL 8.0** - Robust, production-ready database
+- **Redis 7** - High-performance in-memory data store for caching
+- **OAuth2 Authentication** - Complete OAuth2 server implementation with Doorkeeper
 - **Docker & Docker Compose** - Containerized development environment
 - **Puma** - High-performance web server
 - **Hot Reloading** - Automatic code reloading in development
-- **Modern UI** - Clean, responsive interface with utility-first CSS
+- **Modern UI** - Clean, responsive interface with Bootstrap 5
 
 ## 🐳 Prerequisites
 
@@ -32,7 +34,8 @@ make start
 
 This will:
 - Build the Docker images
-- Start PostgreSQL database
+- Start MySQL database
+- Start Redis server
 - Start the Rails application
 - Make it available at http://localhost:3000
 
@@ -61,6 +64,12 @@ make console
 
 # Open database console
 make db-console
+
+# Open Redis console
+make redis-console
+
+# View Redis logs
+make redis-logs
 
 # Restart the application
 make restart
@@ -105,10 +114,18 @@ The application uses MySQL with the following default configuration:
 - **Username**: `rails`
 - **Password**: `password`
 
+### Redis
+The application uses Redis for caching and session storage:
+- **Host**: `redis` (Docker service name)
+- **Port**: `6379`
+- **Database**: `0` (default)
+- **URL**: `redis://redis:6379/0`
+
 ### Environment Variables
 Key environment variables can be configured in `docker-compose.yml`:
 - `RAILS_ENV`: Application environment (development/production)
 - `DATABASE_URL`: Database connection string
+- `REDIS_URL`: Redis connection string
 - `PORT`: Application port (default: 3000)
 
 ## 🛠️ Development
@@ -166,6 +183,44 @@ make console
 rails db:migrate
 ```
 
+### Redis Usage
+The application includes a `RedisService` class for easy Redis operations:
+
+```ruby
+# Basic operations
+RedisService.set('key', 'value')
+RedisService.get('key')
+RedisService.delete('key')
+RedisService.exists?('key')
+
+# Caching with expiration
+RedisService.cache('expensive_operation', expire_in: 1.hour) do
+  # Expensive computation here
+  result
+end
+
+# JSON caching
+RedisService.cache_json('user_data', { name: 'John', age: 30 })
+user_data = RedisService.get_json('user_data')
+
+# Server info
+RedisService.ping
+RedisService.info
+
+# Direct Redis access (if needed)
+$redis.get('key')
+$redis.set('key', 'value')
+```
+
+Access Redis directly:
+```bash
+# Open Redis CLI
+make redis-console
+
+# View Redis logs
+make redis-logs
+```
+
 ### Viewing Logs
 ```bash
 # Application logs
@@ -216,15 +271,105 @@ make clean
 make start
 ```
 
+## 🔐 OAuth2 Authentication
+
+This application includes a complete OAuth2 server implementation using Doorkeeper. You can use it to authenticate third-party applications and manage API access.
+
+### OAuth2 Features
+
+- **Authorization Code Flow** - For web applications
+- **Client Credentials Flow** - For server-to-server authentication
+- **Refresh Tokens** - For long-lived access
+- **Token Introspection** - For token validation
+- **Token Revocation** - For security
+- **Scoped Access** - Fine-grained permissions (read, write)
+
+### OAuth2 Endpoints
+
+The following OAuth2 endpoints are available:
+
+- `POST /oauth/token` - Token endpoint
+- `GET /oauth/authorize` - Authorization endpoint
+- `POST /oauth/introspect` - Token introspection
+- `POST /oauth/revoke` - Token revocation
+
+### Managing OAuth Applications
+
+1. **Sign up/Sign in** to the application
+2. Navigate to **OAuth Apps** in the navigation
+3. Create new OAuth applications with:
+   - Application name
+   - Redirect URI
+   - Scopes (read, write)
+   - Confidentiality setting
+
+### OAuth2 Usage Examples
+
+#### Client Credentials Flow (Server-to-Server)
+
+```bash
+curl -X POST http://localhost:3000/oauth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&scope=read"
+```
+
+#### Authorization Code Flow (Web Applications)
+
+1. **Authorization Request:**
+```bash
+curl "http://localhost:3000/oauth/authorize?client_id=YOUR_CLIENT_ID&response_type=code&redirect_uri=YOUR_REDIRECT_URI&scope=read"
+```
+
+2. **Token Exchange:**
+```bash
+curl -X POST http://localhost:3000/oauth/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=authorization_code&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&code=AUTHORIZATION_CODE&redirect_uri=YOUR_REDIRECT_URI"
+```
+
+#### Token Introspection
+
+```bash
+curl -X POST http://localhost:3000/oauth/introspect \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "token=YOUR_ACCESS_TOKEN"
+```
+
+#### Using Access Tokens
+
+```bash
+curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  http://localhost:3000/api/v1/users
+```
+
+### Test Credentials
+
+After running `make seed`, you can use these test credentials:
+
+- **Test OAuth Application:**
+  - Client ID: `test_app_123`
+  - Client Secret: `test_secret_456`
+  - Redirect URI: `http://localhost:3000/callback`
+
+- **Admin User:**
+  - Email: `admin@dtrails.gn`
+  - Password: `admin123`
+
+### OAuth2 Scopes
+
+- `read` - Read access to resources
+- `write` - Write access to resources
+
 ## 🚀 Production Deployment
 
 For production deployment:
 
 1. **Environment Variables**: Set production environment variables
-2. **Database**: Use production PostgreSQL instance
+2. **Database**: Use production MySQL instance
 3. **Secrets**: Configure Rails credentials and master key
 4. **SSL**: Enable HTTPS with proper certificates
-5. **Monitoring**: Add health checks and logging
+5. **OAuth2**: Configure secure redirect URIs and client secrets
+6. **Monitoring**: Add health checks and logging
 
 ## 📚 Resources
 

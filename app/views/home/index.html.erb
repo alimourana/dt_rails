@@ -1,32 +1,90 @@
-<div class="max-w-4xl mx-auto">
-  <div class="text-center mb-8">
-    <h2 class="text-4xl font-bold text-gray-800 mb-4">Welcome to DT Rails!</h2>
-    <p class="text-xl text-gray-600">Your dockerized Ruby on Rails application is running successfully.</p>
+<div class="container">
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold text-primary mb-3">Welcome to DT Rails!</h1>
+    <p class="lead">Your dockerized Ruby on Rails application with OAuth2 authentication is running successfully.</p>
   </div>
 
-  <div class="grid md:grid-cols-2 gap-6 mb-8">
-    <div class="bg-white p-6 rounded-lg shadow-md border">
-      <h3 class="text-xl font-semibold text-gray-800 mb-3">🚀 Rails Features</h3>
-      <ul class="text-gray-600 space-y-2">
-        <li>• Ruby 3.2.2</li>
-        <li>• Rails 7.1</li>
-        <li>• MySQL Database</li>
-        <li>• Puma Web Server</li>
-        <li>• Hot Reloading</li>
-      </ul>
+  <div class="row g-4 mb-5">
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">🚀 Rails Features</h5>
+          <ul class="list-unstyled">
+            <li>• Ruby 3.2.2</li>
+            <li>• Rails 7.1</li>
+            <li>• MySQL Database</li>
+            <li>• Puma Web Server</li>
+            <li>• Hot Reloading</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="bg-white p-6 rounded-lg shadow-md border">
-      <h3 class="text-xl font-semibold text-gray-800 mb-3">🐳 Docker Setup</h3>
-      <ul class="text-gray-600 space-y-2">
-        <li>• Multi-container setup</li>
-        <li>• Volume persistence</li>
-        <li>• Network isolation</li>
-        <li>• Easy deployment</li>
-        <li>• Development-friendly</li>
-      </ul>
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">🔐 OAuth2 Features</h5>
+          <ul class="list-unstyled">
+            <li>• Doorkeeper OAuth2</li>
+            <li>• Authorization Code Flow</li>
+            <li>• Client Credentials Flow</li>
+            <li>• Token Introspection</li>
+            <li>• Refresh Tokens</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">🔴 Redis Status</h5>
+          <div class="d-flex align-items-center mb-2">
+            <span class="badge bg-success me-2">●</span>
+            <span>Status: <%= @redis_status %></span>
+          </div>
+          <div>Page Views: <%= @page_views %></div>
+          <small class="text-muted">Cached Time: <%= @cached_time %></small>
+        </div>
+      </div>
     </div>
   </div>
+
+  <% if user_signed_in? %>
+    <div class="row g-4 mb-5">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">👋 Welcome back, <%= current_user.full_name %>!</h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">You are signed in as <strong><%= current_user.email %></strong> with role <strong><%= current_user.role %></strong>.</p>
+            <div class="btn-group" role="group">
+              <%= link_to "Manage OAuth Apps", oauth_applications_path, class: "btn btn-primary" %>
+              <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-outline-secondary" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="row g-4 mb-5">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">🔐 Authentication Required</h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">Please sign in to access OAuth application management and other features.</p>
+            <div class="btn-group" role="group">
+              <%= link_to "Sign In", new_user_session_path, class: "btn btn-primary" %>
+              <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-outline-primary" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
   <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
     <h3 class="text-xl font-semibold text-blue-800 mb-3">📋 Quick Start Commands</h3>
@@ -39,6 +97,8 @@
       <div class="text-yellow-400">make stop</div>
       <div class="mb-2 mt-3"># Rails console:</div>
       <div class="text-yellow-400">make console</div>
+      <div class="mb-2 mt-3"># Redis console:</div>
+      <div class="text-yellow-400">make redis-console</div>
       <div class="mb-2 mt-3"># View all commands:</div>
       <div class="text-yellow-400">make help</div>
     </div>

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Citerne < ApplicationRecord
-  has_many :trucks, dependent: :nullify
-  has_many :documents, dependent: :nullify
-  has_many :delivery_notes, dependent: :nullify
+  has_many :trucks, foreign_key: 'citernes_id', dependent: :nullify
+  has_many :documents, foreign_key: 'citernes_id', dependent: :nullify
+  has_many :delivery_notes, foreign_key: 'citernes_id', dependent: :nullify
 
   validates :plate_number, presence: true, uniqueness: true
   validates :chassis_number, presence: true, uniqueness: true

@@ -2,6 +2,9 @@
 
 module Endpoints
   class Base < Grape::API
+    # OAuth endpoints
+    mount Endpoints::V1::Oauth
+    
     # Users
     mount Endpoints::V1::Users::Delete
     mount Endpoints::V1::Users::Create

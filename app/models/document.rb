@@ -6,11 +6,11 @@ class Document < ApplicationRecord
   belongs_to :citerne, optional: true, foreign_key: 'citernes_id', inverse_of: :documents
 
   validates :title, presence: true
-  validates :type, presence: true, inclusion: { in: %w(invoice delivery_note contract maintenance_report other) }
+  validates :document_type, presence: true, inclusion: { in: %w(invoice delivery_note contract maintenance_report other) }
   validates :status, presence: true, inclusion: { in: %w(draft active archived expired) }
 
   scope :active, -> { where(status: 'active') }
-  scope :by_type, ->(type) { where(type: type) }
+  scope :by_type, ->(type) { where(document_type: type) }
   scope :expired, -> { where(expiry_date: ...Time.zone.current) }
   scope :expiring_soon, -> { where('expiry_date BETWEEN ? AND ?', Time.zone.current, 30.days.from_now) }
 
